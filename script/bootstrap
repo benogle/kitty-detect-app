@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var fs = require("fs");
+var path = require("path");
+var proc = require("child_process");
+
+var modulePath = path.join(".", "node_modules");
+var rebuildPath = path.join(modulePath, ".bin", "electron-rebuild");
+var prebuiltPath = path.join(modulePath, "electron-prebuilt");
+var prebuiltPackageJSONPath = path.join(prebuiltPath, "package.json");
+
+function jsonValue(path, value) { return JSON.parse(fs.readFileSync(path).toString())[value]; };
+
+var electronVersion = jsonValue(prebuiltPackageJSONPath, "version");
+
+proc.spawnSync("npm", ["install"], {stdio: "inherit"});
+
+var args = [
+  "--version", electronVersion,
+  "--electron-prebuilt-dir", prebuiltPath,
+  "--module-dir", modulePath
+];
+
+proc.spawn(rebuildPath, args, {stdio: "inherit"});
