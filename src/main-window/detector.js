@@ -21,12 +21,11 @@ class Detector {
   }
 
   setFileName(fileName) {
-    this.fileName = fileName
-    if (fileName) {
-      this.fileName = path.resolve(fileName)
-      this.fileURL = 'file://' + this.fileName
-      this.canvas.drawFromURL(this.fileURL)
-    }
+    if (!fileName)
+      fileName = path.join(__dirname, '..', 'default-kitty.jpg')
+    this.fileName = path.resolve(fileName)
+    this.fileURL = 'file://' + this.fileName
+    this.canvas.drawFromURL(this.fileURL)
   }
 
   detect() {
