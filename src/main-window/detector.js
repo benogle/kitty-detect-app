@@ -12,10 +12,17 @@ class Detector {
     return this.element
   }
 
+  getFileName() {
+    return this.fileName
+  }
+
   setFileName(fileName) {
-    this.fileName = path.resolve(fileName)
-    this.fileURL = 'file://' + this.fileName
-    this.canvas.drawFromURL(this.fileURL)
+    this.fileName = fileName
+    if (fileName) {
+      this.fileName = path.resolve(fileName)
+      this.fileURL = 'file://' + this.fileName
+      this.canvas.drawFromURL(this.fileURL)
+    }
   }
 
   detect() {

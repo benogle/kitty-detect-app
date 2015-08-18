@@ -1,6 +1,9 @@
 var Detector = require('./detector')
-
 var detector
+
+require('ipc').on('open-image', function(fileName) {
+  detector.setFileName(fileName)
+})
 
 window.onload = function() {
   var hash, args, element

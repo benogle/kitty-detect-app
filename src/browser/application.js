@@ -12,24 +12,15 @@ class Application {
     global.application = this;
     require('crash-reporter').start();
 
-    var fileNamesToOpen = argv._
-    app.on('ready', () => this.onReady(fileNamesToOpen));
+    var fileNameToOpen = argv._[0]
+    app.on('ready', () => this.onReady(fileNameToOpen));
 
-    ipc.on('call-window-method', (event, method, ...args) => {
-      let win = BrowserWindow.fromWebContents(event.sender)
-      win[method](...args)
-    })
-
-    this.windows = [];
     this.gettingStartedWindow = null
   }
 
   // Called when electron is ready
   onReady(fileNamesToOpen) {
-    if (fileNamesToOpen.length)
-      this.openFiles(fileNamesToOpen);
-    else
-      this.openWindow()
+    this.win = this.openWindow(fileNamesToOpen);
   }
 
   // Called when the user clicks the open menu
@@ -43,38 +34,21 @@ class Application {
     };
 
     dialog.showOpenDialog(null, options, (fileNames) => {
-      this.openFiles(fileNames);
+      this.openFile(fileNames[0]);
     });
   }
 
-  openFiles(fileNames) {
-    if (fileNames && fileNames.length){
-      for (let fileName of fileNames)
-        this.openWindow(fileName)
-    }
+  openFile(fileName) {
+    this.win.window.webContents.send('open-image', fileName);
   }
 
   openWindow(fileName) {
     var win, windowPath;
     windowPath = path.resolve(__dirname, "..", "main-window", "index.html");
-    win = new ApplicationWindow(windowPath, {
-      width: 1200,
+    return new ApplicationWindow(windowPath, {
+      width: 800,
       height: 800
     }, {fileName: fileName});
-    this.addWindow(win);
-  }
-
-  removeWindow(win) {
-    this.windows.splice(this.windows.indexOf(win), 1);
-  }
-
-  addWindow(win) {
-    this.windows.push(win);
-    win.on("closed", (function(_this) {
-      return function() {
-        return _this.removeWindow(win);
-      };
-    })(this));
   }
 }
 
