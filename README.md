@@ -1,6 +1,10 @@
-# Electron KittyDetect.app
+# KittyDetect.app
 
-This is a kitty-detect-app app
+Detects cat faces in cat pictures. Does not detect cat faces in non-cat pictures. Probably the most important app in existence.
+
+![omghellotada](https://cloud.githubusercontent.com/assets/69169/9335069/dc7edb52-4586-11e5-99f3-f36e0ffa7cc3.png)
+
+## Developing
 
 ```bash
 ./script/bootstrap
@@ -17,7 +21,3 @@ And when you're ready to build for release run:
 ```
 ./script/build
 ```
-
-#### Magic
-
-![omghellotada](https://cloud.githubusercontent.com/assets/69169/9285656/f67f853e-429c-11e5-8f0d-bad9f6b16052.png)
