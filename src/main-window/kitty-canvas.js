@@ -26,7 +26,7 @@ class KittyCanvas {
     var kittydar = new Kittydar()
     if (this.worker) this.worker.terminate()
 
-    var queue = new Queue(50)
+    var queue = new Queue(80)
     var doneQueue = new Queue(100)
 
     this.worker = new Worker(path.join(__dirname, "kitty-detect-worker.js"))
