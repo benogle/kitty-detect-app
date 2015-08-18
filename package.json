@@ -23,6 +23,7 @@
     "electron-rebuild": "^0.2.5"
   },
   "dependencies": {
+    "event-kit": "^1.2.0",
     "yargs": "^3.16.1"
   }
 }

@@ -1,10 +1,14 @@
-var Main = require('./main')
+var Detector = require('./detector')
 
 window.onload = function() {
-  var hash, args, element
+  var hash, args, element, main
   hash = window.location.hash.slice(1)
   args = Object.freeze(JSON.parse(decodeURIComponent(hash)))
-  var element = new Main(args.fileName).getElement()
 
-  document.querySelector('#image-container').appendChild(element)
+  main = new Detector(args.fileName)
+  element = main.getElement()
+
+  document.body.appendChild(element)
+
+  main.detect()
 }
