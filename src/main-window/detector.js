@@ -8,6 +8,10 @@ class Detector {
     this.setFileName(fileName)
   }
 
+  on(event, cb) {
+    this.canvas.emitter.on(event, cb)
+  }
+
   getElement() {
     return this.element
   }

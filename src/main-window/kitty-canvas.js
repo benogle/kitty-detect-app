@@ -5,6 +5,7 @@ var {Kittydar} = require('../../vendor/kittydar/kittydar')
 module.exports =
 class KittyCanvas {
   constructor() {
+    this.emitter = new Emitter
     this.ohai()
   }
 
@@ -31,16 +32,18 @@ class KittyCanvas {
     this.worker = new Worker(path.join(__dirname, "kitty-detect-worker.js"))
     this.worker.onmessage = () => {
       var data = event.data
-      // console.log(data);
       if (data.type == 'progress' && data.cats.length) {
-        queue.push(() => this.paintFaces(data.cats, "orange"))
+        queue.push(() => {
+          this.paintFaces(data.cats, "orange")
+          this.emitter.emit('progress', {catFaces: data.cats.length})
+        })
         queue.run()
       }
       else if (data.type == 'result' && data.cats.length) {
-        console.log('cats');
         doneQueue.push(() => {
           this.clearFaces()
           this.paintFaces(data.cats, "#00cc00")
+          this.emitter.emit('found', {catFaces: data.cats.length})
         })
 
         var count = 0
@@ -59,6 +62,9 @@ class KittyCanvas {
         })
         queue.emitter.on('done', runAgain)
         queue.run()
+      }
+      else if (data.type == 'result' && data.cats.length == 0) {
+        this.emitter.emit('found', {catFaces: 0})
       }
     }
     this.worker.onerror = (event) => {
