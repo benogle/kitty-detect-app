@@ -1,14 +1,19 @@
 var Detector = require('./detector')
 
+var detector
+
 window.onload = function() {
-  var hash, args, element, main
+  var hash, args, element
   hash = window.location.hash.slice(1)
   args = Object.freeze(JSON.parse(decodeURIComponent(hash)))
 
-  main = new Detector(args.fileName)
-  element = main.getElement()
+  detector = new Detector(args.fileName)
+  element = detector.getElement()
 
-  document.body.appendChild(element)
+  document.querySelector('#image-container').appendChild(element)
+  document.querySelector('#button-bar button').addEventListener('click', didClickButton)
+}
 
-  main.detect()
+function didClickButton(event) {
+  detector.detect()
 }
