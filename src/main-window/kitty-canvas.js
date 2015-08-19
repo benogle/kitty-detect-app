@@ -64,6 +64,7 @@ class KittyCanvas {
         queue.run()
       }
       else if (data.type == 'result' && data.cats.length == 0) {
+        this.clearFaces()
         this.emitter.emit('found', {catFaces: 0})
       }
     }
@@ -76,7 +77,6 @@ class KittyCanvas {
   }
 
   drawKitty(img) {
-    console.log(img);
     var width = img.width
     var height = img.height
 
